@@ -1,0 +1,82 @@
+---
+title: "p8105_hw1_xt2340"
+author: "Xuening Tang"
+date: "2026-09-26"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Problem 1
+
+```{r load_data}
+library(tidyverse)
+library(palmerpenguins)
+
+```
+
+The dataset has `r nrow(penguins)` rows and `r ncol(penguins)` columns. Important variables in this dataset include `species` (e.g., Adelie, Chinstrap, Gentoo), `island` (Biscoe, Dream, Torgersen), `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `sex`, and `year`. The mean flipper length of the penguins in this dataset is `r round(mean(penguins$flipper_length_mm, na.rm = TRUE), 2)` mm.
+
+```{r penguin_scatter, warning=FALSE}
+library(tidyverse)
+library(palmerpenguins)
+data("penguins", package = "palmerpenguins")
+
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) +
+  geom_point() +
+  labs(
+    title = "Penguin Flipper Length vs Bill Length",
+    x = "Bill Length (mm)",
+    y = "Flipper Length (mm)",
+    color = "Species"
+  )
+
+ggsave("penguin_scatterplot.png", width = 6, height = 4)
+
+```
+
+
+# Problem 2
+
+Create data frames
+
+```{r prob2_dataframe}
+library(tidyverse)
+
+set.seed(8105)
+
+prob2_df = tibble(
+  samp = rnorm(10),
+  samp_gt_0 = samp > 0,
+  vec_char = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"),
+  vec_factor = factor(c("Low", "Medium", "High", "Low", "Medium", "High", "Low", "Medium", "High", "Low"))
+)
+
+```
+
+Take the mean of each column
+
+```{r prob2_mean, eval=FALSE}
+mean(pull(prob2_df, samp))
+mean(pull(prob2_df, samp_gt_0))
+mean(pull(prob2_df, vec_char))
+mean(pull(prob2_df, vec_factor))
+
+```
+
+
+```{r prob2_as_numeric, eval=FALSE}
+as.numeric(pull(prob2_df, samp_gt_0))
+as.numeric(pull(prob2_df, vec_char))
+as.numeric(pull(prob2_df, vec_factor))
+
+```
+
+Analysis:
+
+Means can be successfully calculated for the numeric variable (`samp`) and the logical variable (`samp_gt_0`), where logical values are treated as 1 (`TRUE`) and 0 (`FALSE`).
+Means cannot be calculated for the character variable (`vec_char`) and factor variable (`vec_factor`), resulting in `NA` values and warning messages.
+
